@@ -1,6 +1,5 @@
 import axios from 'axios';
-import * as Config from './../../constant/Config';
-const endpoint = 'Category';
+import * as Config from './../constant/Config';
 export  function post(endpoint, medthod = 'GET', data) {
     return axios({
         method: medthod,
@@ -8,8 +7,8 @@ export  function post(endpoint, medthod = 'GET', data) {
         data: data
     }).catch(err => { console.log(err) });
 }
-export function getPaging(params) {
-    return axios.get(`${Config.API_URL}/${endpoint}/getlistpaging`, {
+export  function get(endpoint, medthod = 'GET', params) {
+    return axios.get(`${Config.API_URL}/${endpoint}`, {
         params: params
       });
 }
