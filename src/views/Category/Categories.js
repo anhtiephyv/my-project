@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table, Button, Input } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Table, Button, Input,Form,FormGroup } from 'reactstrap';
 import { connect } from 'react-redux';
 import { actGetAllCategoryRequest, actDeleteCategoryRequest } from '../../action/Category';
 import Pagination from './../../ultils/Pagination';
 import * as categoryservice from './CategoryService'
-
+import CategoryCreate from './CategoryCreate';
 function UserRow(props) {
-  debugger;
   const category = props.category;
   // const userLink = `#/users/${user.id}`
 
@@ -39,7 +38,8 @@ class Categories extends Component {
       currentPage: null,
       totalPages: 0,
       totalRecords: 0,
-      pageLimit: 5, keyword: null
+      pageLimit: 5, keyword: null,
+      showCreateModal: false,
     };
     // bind function in constructor instead of render (https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md)
     this.onPageChanged = this.onPageChanged.bind(this);
@@ -69,9 +69,12 @@ class Categories extends Component {
       this.setState({ totalRecords: res.data.TotalCount });
       this.props.getAllCategories(res.data);
     })
-  }
+  };
+  showCreateModal() {
+    debugger;
+    this.setState({ showCreateModal: true });
+  };
   componentDidMount() {
-
     let params = {
       page: this.state.currentPage == null ? 0 : this.state.currentPage,
       pageSize: this.state.pageLimit == null ? 10 : this.state.pageLimit,
@@ -88,10 +91,8 @@ class Categories extends Component {
   };
   render() {
     const {
-      currentPage,
-      totalPages,
-      totalRecords,
-      pageLimit
+      pageLimit,
+      showCreateModal
     } = this.state;
     var { categories } = this.props;
     return (
@@ -100,20 +101,23 @@ class Categories extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Category
-                <div className="float-xl-right">  <Button className="btn-pill btn-outline-success" type="button" onClick={e => this.reloadData()}>  <i className="fa fa-plus"></i> Thêm mới</Button></div><br></br>
+                <i className="fa fa-folder"></i> Loại sản phẩm
+                <div className="float-xl-right"><CategoryCreate></CategoryCreate></div><br></br>
               </CardHeader>
               <CardBody>
-                <Row>
-                  <Col xl={5} md={{ size: 8, offset: 2 }} >
+                  <Col xl={4}>
+                <Form action="" method="post" className="form-horizontal">
+                  <FormGroup row>
                     <div className="input-group px-1">
                       <Input type="text" className="form-control" placeholder="Tìm kiếm" name="keyword" />
                       <div className="input-group-append">
                         <Button className="btn btn-outline-secondary" type="button">  <i className="fa fa-search"></i>Tìm kiếm</Button>
                       </div>
                     </div>
-                  </Col>
-                </Row>
+                
+                   </FormGroup>
+                </Form>
+                 </Col>
                 <Row>
                   <Col xl={12}>
                     <Table responsive bordered>
@@ -141,6 +145,7 @@ class Categories extends Component {
             </Card>
           </Col>
         </Row>
+
       </div>
     )
   }
