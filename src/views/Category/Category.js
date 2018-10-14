@@ -1,46 +1,34 @@
-// import React, { Component } from 'react';
-// import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import React, { Component } from 'react';
+import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 
-// import CategoryService from './CategoryService';
+import CategoryService from './CategoryService';
 
-// class Category extends Component
-// {
-//   render() {
+class Category extends Component
+{
+  render() {
 
-//     const user = usersData.find( user => user.id.toString() === this.props.match.params.id)
+    
+    return (
+      <div className="animated fadeIn">
+        <Row>
+          <Col lg={6}>
+            <Card>
+              <CardHeader>
+                <strong><i className="icon-info pr-1"></i>User id: </strong>
+              </CardHeader>
+              <CardBody>
+              <Table responsive bordered>
+                    <tbody>
+        
+                    </tbody>
+                  </Table>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    )
+  }
+}
 
-//     const userDetails = user ? Object.entries(user) : [['id', (<span><i className="text-muted icon-ban"></i> Not found</span>)]]
-
-//     return (
-//       <div className="animated fadeIn">
-//         <Row>
-//           <Col lg={6}>
-//             <Card>
-//               <CardHeader>
-//                 <strong><i className="icon-info pr-1"></i>User id: {this.props.match.params.id}</strong>
-//               </CardHeader>
-//               <CardBody>
-//               <Table responsive bordered>
-//                     <tbody>
-//                       {
-//                         userDetails.map(([key, value]) => {
-//                           return (
-//                             <tr key={key}>
-//                               <td>{`${key}:`}</td>
-//                               <td><strong>{value}</strong></td>
-//                             </tr>
-//                           )
-//                         })
-//                       }
-//                     </tbody>
-//                   </Table>
-//               </CardBody>
-//             </Card>
-//           </Col>
-//         </Row>
-//       </div>
-//     )
-//   }
-// }
-
-// export default Category;
+export default Category;

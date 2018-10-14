@@ -1,5 +1,5 @@
 import * as Types from '../constant/actionType';
-import * as callApi from './../ultils/apiCaller';
+import * as callApi from '../ultils/apiCaller';
 // Get danh sách
 export const actGetAllCategoryRequest = (data) => {
     return (dispatch) => {
@@ -16,7 +16,8 @@ export const actGetAllCategory = (categories) => {
 // Thêm 
 export const actAddCategoryRequest = (category) => {
     return (dispatch) => {
-        return callApi('Category/create', 'POST', category).then(res => {
+        debugger;
+        return callApi.post('Category/create', 'POST', category).then(res => {
             dispatch(actAddCategory(res.data));
         })
     }

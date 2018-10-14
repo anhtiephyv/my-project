@@ -3,281 +3,154 @@ import {
     Button, Card, CardBody, CardHeader, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row, Badge,
     FormGroup, Label, CardFooter, FormText
 } from 'reactstrap';
+import * as ValidateConst from './../../ultils/validator';
 import Form from 'react-validation/build/form';
 import Input from 'react-validation/build/input';
 import Textarea from 'react-validation/build/textarea';
 import Select from 'react-validation/build/select';
 import CheckButton from 'react-validation/build/button';
-import * as ValidateConst from './../../ultils/validator';
-
+import { connect } from 'react-redux';
+import { actAddCategoryRequest } from './../../action/Category';
+import * as categoryservice from './CategoryService';
 class CategoryCreate extends Component {
     constructor(props) {
-        validator
+        debugger;
         super(props);
         this.state = {
             large: false,
+            category: {},
+            CategoryID: props.CategoryID
         };
-        this.toggleLarge = this.toggleLarge.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+
     }
-    toggleLarge() {
+    toggleModal(CategoryID = null) {
+        debugger;
+        if(typeof CategoryID == "number")
+        {
+            this.setState({
+                CategoryID: CategoryID,
+            });
+        }
         this.setState({
             large: !this.state.large,
         });
     }
+    inputOnChange = (e, key) => {
+        let category = this.state.category;
+        category[key] = e.target.value;
+        this.setState({ category });
+    };
+    createData = (e) => {
+        e.preventDefault();
+        this.form.validateAll();
+        if (this.checkBtn.context._errors.length === 0) {
+            this.props.onAddCategory(this.state.category);
+
+            this.toggleModal();
+        }
+
+    };
     render() {
+        const {
+            CategoryID
+        } = this.state;
         return (
             <div className="animated fadeIn">
-                <Button className="btn-pill btn-outline-success" onClick={this.toggleLarge}><i className="fa fa-plus"></i> Thêm mới</Button>
-                <Modal isOpen={this.state.large} toggle={this.toggleLarge}
+                <Button className="btn-pill btn-outline-success" onClick={this.toggleModal}><i className="fa fa-plus"></i> Thêm mới</Button>
+                <Modal isOpen={this.state.large} toggle={this.toggleModal}
                     className={'modal-lg ' + this.props.className}>
-                    <ModalHeader toggle={this.toggleLarge}>Thêm mới loại sản phẩm</ModalHeader>
+                    <ModalHeader toggle={this.toggleModal}>Thêm mới loại sản phẩm {CategoryID}</ModalHeader>
                     <ModalBody>
                         <Row>
                             <Col xs="12" md="12">
-                                <Card>
-                                    <CardBody>
-                                        <Form action="" method="post" encType="multipart/form-data" className="form-horizontal">
+                                <Form method="post" encType="multipart/form-data" className="form-horizontal" onSubmit={e => this.createData(e)} ref={c => { this.form = c }}>
+                                    <Card>
+                                        <CardBody>
                                             <FormGroup row>
                                                 <Col md="3">
-                                                    <Label>Static</Label>
+                                                    <Label className="float-right" htmlFor="text-input">Tên loại sản phẩm <span style={{ color: 'red' }}>(*)</span></Label>
                                                 </Col>
                                                 <Col xs="12" md="9">
-                                                    <p className="form-control-static">Username</p>
+                                                    <Input type="text"
+                                                        id="text-input"
+                                                        name="CategoryName"
+                                                        placeholder="Tên loại sản phẩm"
+                                                        className="form-control"
+                                                        validations={[ValidateConst.required, ValidateConst.minLength(10)]}
+                                                        onChange={(e) => this.inputOnChange(e, 'CategoryName')}
+                                                    />
                                                 </Col>
                                             </FormGroup>
                                             <FormGroup row>
                                                 <Col md="3">
-                                                    <Label htmlFor="text-input">Text Input</Label>
+                                                    <Label className="float-right" htmlFor="text-input">Loại cha</Label>
                                                 </Col>
                                                 <Col xs="12" md="9">
-                                                    <Input type="text" id="text-input" name="text-input" placeholder="Text" />
-                                                    <FormText color="muted">This is a help text</FormText>
+                                                    <Input
+                                                        type="text"
+                                                        id="email-input"
+                                                        name="ParentName"
+                                                        placeholder="loại cha"
+                                                        className="form-control"
+                                                        onChange={(e) => this.inputOnChange(e, 'ParentCategory')} />
                                                 </Col>
                                             </FormGroup>
+
                                             <FormGroup row>
                                                 <Col md="3">
-                                                    <Label htmlFor="email-input">Email Input</Label>
+                                                    <Label className="float-right" htmlFor="text-input">Sắp xếp <span style={{ color: 'red' }}>(*)</span></Label>
                                                 </Col>
                                                 <Col xs="12" md="9">
-                                                    <Input type="email" id="email-input" name="email-input" placeholder="Enter Email" autoComplete="email" />
-                                                    <FormText className="help-block">Please enter your email</FormText>
+                                                    <Input
+                                                        type="number"
+                                                        id="text-sort"
+                                                        name="DisplayOrder"
+                                                        placeholder="Sắp xếp"
+                                                        className="form-control"
+                                                        validations={[ValidateConst.required]}
+                                                        onChange={(e) => this.inputOnChange(e, 'DisplayOrder')} />
                                                 </Col>
                                             </FormGroup>
                                             <FormGroup row>
                                                 <Col md="3">
-                                                    <Label htmlFor="password-input">Password</Label>
+                                                    <Label className="float-right" htmlFor="text-input">Mô tả</Label>
                                                 </Col>
                                                 <Col xs="12" md="9">
-                                                    <Input type="password" id="password-input" name="password-input" placeholder="Password" autoComplete="new-password" />
-                                                    <FormText className="help-block">Please enter a complex password</FormText>
+                                                    <Textarea
+                                                        name="Description"
+                                                        id="textarea-input" rows={9}
+                                                        placeholder="Nhập mô tả"
+                                                        className="form-control"
+                                                        // defaultValue={""}
+                                                        onChange={(e) => this.inputOnChange(e, 'Description')}></Textarea>
                                                 </Col>
                                             </FormGroup>
                                             <FormGroup row>
                                                 <Col md="3">
-                                                    <Label htmlFor="date-input">Date Input <Badge>NEW</Badge></Label>
+                                                    <Label className="float-right" htmlFor="text-input">Level</Label>
                                                 </Col>
                                                 <Col xs="12" md="9">
-                                                    <Input type="date" id="date-input" name="date-input" placeholder="date" />
+                                                    <Select
+                                                        name="categoryLevel"
+                                                        id="select"
+                                                        className="form-control"
+                                                        onChange={(e) => this.inputOnChange(e, 'categoryLevel')}>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                    </Select>
                                                 </Col>
                                             </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3">
-                                                    <Label htmlFor="disabled-input">Disabled Input</Label>
-                                                </Col>
-                                                <Col xs="12" md="9">
-                                                    <Input type="text" id="disabled-input" name="disabled-input" placeholder="Disabled" disabled />
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3">
-                                                    <Label htmlFor="textarea-input">Textarea</Label>
-                                                </Col>
-                                                <Col xs="12" md="9">
-                                                    <Input type="textarea" name="textarea-input" id="textarea-input" rows="9"
-                                                        placeholder="Content..." />
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3">
-                                                    <Label htmlFor="select">Select</Label>
-                                                </Col>
-                                                <Col xs="12" md="9">
-                                                    <Input type="select" name="select" id="select">
-                                                        <option value="0">Please select</option>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                    </Input>
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3">
-                                                    <Label htmlFor="selectLg">Select Large</Label>
-                                                </Col>
-                                                <Col xs="12" md="9" size="lg">
-                                                    <Input type="select" name="selectLg" id="selectLg" bsSize="lg">
-                                                        <option value="0">Please select</option>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                    </Input>
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3">
-                                                    <Label htmlFor="selectSm">Select Small</Label>
-                                                </Col>
-                                                <Col xs="12" md="9">
-                                                    <Input type="select" name="selectSm" id="SelectLm" bsSize="sm">
-                                                        <option value="0">Please select</option>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                        <option value="4">Option #4</option>
-                                                        <option value="5">Option #5</option>
-                                                    </Input>
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3">
-                                                    <Label htmlFor="disabledSelect">Disabled Select</Label>
-                                                </Col>
-                                                <Col xs="12" md="9">
-                                                    <Input type="select" name="disabledSelect" id="disabledSelect" disabled autoComplete="name">
-                                                        <option value="0">Please select</option>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                    </Input>
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3">
-                                                    <Label htmlFor="multiple-select">Multiple select</Label>
-                                                </Col>
-                                                <Col md="9">
-                                                    <Input type="select" name="multiple-select" id="multiple-select" multiple>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                        <option value="4">Option #4</option>
-                                                        <option value="5">Option #5</option>
-                                                        <option value="6">Option #6</option>
-                                                        <option value="7">Option #7</option>
-                                                        <option value="8">Option #8</option>
-                                                        <option value="9">Option #9</option>
-                                                        <option value="10">Option #10</option>
-                                                    </Input>
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3">
-                                                    <Label>Radios</Label>
-                                                </Col>
-                                                <Col md="9">
-                                                    <FormGroup check className="radio">
-                                                        <Input className="form-check-input" type="radio" id="radio1" name="radios" value="option1" />
-                                                        <Label check className="form-check-label" htmlFor="radio1">Option 1</Label>
-                                                    </FormGroup>
-                                                    <FormGroup check className="radio">
-                                                        <Input className="form-check-input" type="radio" id="radio2" name="radios" value="option2" />
-                                                        <Label check className="form-check-label" htmlFor="radio2">Option 2</Label>
-                                                    </FormGroup>
-                                                    <FormGroup check className="radio">
-                                                        <Input className="form-check-input" type="radio" id="radio3" name="radios" value="option3" />
-                                                        <Label check className="form-check-label" htmlFor="radio3">Option 3</Label>
-                                                    </FormGroup>
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3">
-                                                    <Label>Inline Radios</Label>
-                                                </Col>
-                                                <Col md="9">
-                                                    <FormGroup check inline>
-                                                        <Input className="form-check-input" type="radio" id="inline-radio1" name="inline-radios" value="option1" />
-                                                        <Label className="form-check-label" check htmlFor="inline-radio1">One</Label>
-                                                    </FormGroup>
-                                                    <FormGroup check inline>
-                                                        <Input className="form-check-input" type="radio" id="inline-radio2" name="inline-radios" value="option2" />
-                                                        <Label className="form-check-label" check htmlFor="inline-radio2">Two</Label>
-                                                    </FormGroup>
-                                                    <FormGroup check inline>
-                                                        <Input className="form-check-input" type="radio" id="inline-radio3" name="inline-radios" value="option3" />
-                                                        <Label className="form-check-label" check htmlFor="inline-radio3">Three</Label>
-                                                    </FormGroup>
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3"><Label>Checkboxes</Label></Col>
-                                                <Col md="9">
-                                                    <FormGroup check className="checkbox">
-                                                        <Input className="form-check-input" type="checkbox" id="checkbox1" name="checkbox1" value="option1" />
-                                                        <Label check className="form-check-label" htmlFor="checkbox1">Option 1</Label>
-                                                    </FormGroup>
-                                                    <FormGroup check className="checkbox">
-                                                        <Input className="form-check-input" type="checkbox" id="checkbox2" name="checkbox2" value="option2" />
-                                                        <Label check className="form-check-label" htmlFor="checkbox2">Option 2</Label>
-                                                    </FormGroup>
-                                                    <FormGroup check className="checkbox">
-                                                        <Input className="form-check-input" type="checkbox" id="checkbox3" name="checkbox3" value="option3" />
-                                                        <Label check className="form-check-label" htmlFor="checkbox3">Option 3</Label>
-                                                    </FormGroup>
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3">
-                                                    <Label>Inline Checkboxes</Label>
-                                                </Col>
-                                                <Col md="9">
-                                                    <FormGroup check inline>
-                                                        <Input className="form-check-input" type="checkbox" id="inline-checkbox1" name="inline-checkbox1" value="option1" />
-                                                        <Label className="form-check-label" check htmlFor="inline-checkbox1">One</Label>
-                                                    </FormGroup>
-                                                    <FormGroup check inline>
-                                                        <Input className="form-check-input" type="checkbox" id="inline-checkbox2" name="inline-checkbox2" value="option2" />
-                                                        <Label className="form-check-label" check htmlFor="inline-checkbox2">Two</Label>
-                                                    </FormGroup>
-                                                    <FormGroup check inline>
-                                                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="inline-checkbox3" value="option3" />
-                                                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Three</Label>
-                                                    </FormGroup>
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3">
-                                                    <Label htmlFor="file-input">File input</Label>
-                                                </Col>
-                                                <Col xs="12" md="9">
-                                                    <Input type="file" id="file-input" name="file-input" />
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="3">
-                                                    <Label htmlFor="file-multiple-input">Multiple File input</Label>
-                                                </Col>
-                                                <Col xs="12" md="9">
-                                                    <Input type="file" id="file-multiple-input" name="file-multiple-input" multiple />
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row hidden>
-                                                <Col md="3">
-                                                    <Label className="custom-file" htmlFor="custom-file-input">Custom file input</Label>
-                                                </Col>
-                                                <Col xs="12" md="9">
-                                                    <Label className="custom-file">
-                                                        <Input className="custom-file" type="file" id="custom-file-input" name="file-input" />
-                                                        <span className="custom-file-control"></span>
-                                                    </Label>
-                                                </Col>
-                                            </FormGroup>
-                                        </Form>
-                                    </CardBody>
-                                    <CardFooter>
-                                        <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
-                                        <Button type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
-                                    </CardFooter>
-                                </Card>
+
+                                        </CardBody>
+                                        <CardFooter>
+
+                                            <Button type="submit" size="sm" color="primary"><i className="fa fa-save"></i> Lưu</Button>
+                                            <Button type="reset" size="sm" onClick={this.toggleModal} color="danger"><i className="fa fa-times"></i> Thoát</Button>
+                                            <CheckButton style={{ display: 'none' }} ref={c => { this.checkBtn = c }} />
+                                        </CardFooter>
+                                    </Card>
+                                </Form>
                             </Col>
                         </Row>
                     </ModalBody>
@@ -287,5 +160,15 @@ class CategoryCreate extends Component {
         );
     }
 }
-
-export default CategoryCreate;
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        onAddCategory: (category) => {
+            debugger;
+            categoryservice.addCategory(category).then(res => {
+                ownProps.reloadDataMethod()
+            });
+        },
+    }
+}
+// Thêm đoạn { withRef: true } để thằng có refs có thể gọi được
+export default connect(null, mapDispatchToProps, null, { withRef: true })(CategoryCreate);

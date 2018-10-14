@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as Config from './../constant/Config';
-export  function post(endpoint, medthod = 'GET', data) {
+export  function post(endpoint, medthod = 'POST', data) {
     return axios({
         method: medthod,
         url: `${Config.API_URL}/${endpoint}`,
