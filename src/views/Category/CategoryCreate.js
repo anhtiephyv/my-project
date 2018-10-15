@@ -29,7 +29,13 @@ class CategoryCreate extends Component {
         e.preventDefault();
         this.form.validateAll();
         if (this.checkBtn.context._errors.length === 0) {
-            this.props.onAddCategory(this.state.category);
+            if (this.state.category.CategoryID) {
+                        
+            }
+            else {
+                this.props.onAddCategory(this.state.category);
+            }
+
 
             this.props.closeModal();
         }
@@ -43,7 +49,7 @@ class CategoryCreate extends Component {
             });
         }
         else {
-            this.setState({ category: {}  });
+            this.setState({ category: {} });
         }
     }
     render() {
@@ -60,7 +66,14 @@ class CategoryCreate extends Component {
                                 <Form method="post" encType="multipart/form-data" className="form-horizontal" onSubmit={e => this.createData(e)} ref={c => { this.form = c }}>
                                     <Card>
                                         <CardBody>
+                                            <Input type="hidden"
+                                                id="text-input"
+                                                name="CategoryID"
+
+                                                className="form-control"
+                                            />
                                             <FormGroup row>
+
                                                 <Col md="3">
                                                     <Label className="float-right" htmlFor="text-input">Tên loại sản phẩm <span style={{ color: 'red' }}>(*)</span></Label>
                                                 </Col>
@@ -70,7 +83,7 @@ class CategoryCreate extends Component {
                                                         name="CategoryName"
                                                         placeholder="Tên loại sản phẩm"
                                                         className="form-control"
-                                                        value={category.CategoryID == null ? "" : category.CategoryName}
+                                                        value={category.CategoryName == null ? "" : category.CategoryName}
                                                         validations={[ValidateConst.required, ValidateConst.minLength(10)]}
                                                         onChange={(e) => this.inputOnChange(e, 'CategoryName')}
                                                     />
@@ -86,6 +99,7 @@ class CategoryCreate extends Component {
                                                         id="email-input"
                                                         name="ParentName"
                                                         placeholder="loại cha"
+                                                        value={category.ParentCategory == null ? "" : category.ParentCategory}
                                                         className="form-control"
                                                         onChange={(e) => this.inputOnChange(e, 'ParentCategory')} />
                                                 </Col>
@@ -102,6 +116,7 @@ class CategoryCreate extends Component {
                                                         name="DisplayOrder"
                                                         placeholder="Sắp xếp"
                                                         className="form-control"
+                                                        value={category.DisplayOrder == null ? "" : category.DisplayOrder.toString()}
                                                         validations={[ValidateConst.required]}
                                                         onChange={(e) => this.inputOnChange(e, 'DisplayOrder')} />
                                                 </Col>
@@ -116,7 +131,7 @@ class CategoryCreate extends Component {
                                                         id="textarea-input" rows={9}
                                                         placeholder="Nhập mô tả"
                                                         className="form-control"
-                                                        // defaultValue={""}
+                                                        value={category.Description == null ? "" : category.Description.toString()}
                                                         onChange={(e) => this.inputOnChange(e, 'Description')}></Textarea>
                                                 </Col>
                                             </FormGroup>
@@ -126,10 +141,13 @@ class CategoryCreate extends Component {
                                                 </Col>
                                                 <Col xs="12" md="9">
                                                     <Select
-                                                        name="categoryLevel"
+                                                        name="CategoryLevel"
                                                         id="select"
+                                                        value={category.CategoryLevel == null ? "" : category.CategoryLevel.toString()}
                                                         className="form-control"
-                                                        onChange={(e) => this.inputOnChange(e, 'categoryLevel')}>
+                                                        validations={[ValidateConst.required]}
+                                                        onChange={(e) => this.inputOnChange(e, 'CategoryLevel')}>
+                                                        <option value="">Chọn level</option>
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
                                                     </Select>
