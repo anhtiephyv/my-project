@@ -14,12 +14,16 @@ class Categories extends Component {
       totalPages: 0,
       totalRecords: 0,
       pageLimit: 5, keyword: null,
-      showCreateModal: false,
+      showModal: false,
+      CategoryID: null,
     };
     this.onPageChanged = this.onPageChanged.bind(this);
     this.reloadData = this.reloadData.bind(this);
-    this.showModal = this.showModal.bind(this);
+    this.showCreateModal = this.showCreateModal.bind(this);
+    this.showEditModal = this.showEditModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   };
+  // Reload lại data khi bấm sang page khác
   onPageChanged(data) {
     if (data.currentPage > 0) {
       data.currentPage = data.currentPage - 1;
@@ -30,7 +34,7 @@ class Categories extends Component {
     })
 
   }
-
+  // Reload lại data
   reloadData() {
     categoryservice.getPaging({
       page: this.state.currentPage == null ? 0 : this.state.currentPage,
@@ -44,6 +48,7 @@ class Categories extends Component {
       this.props.getAllCategories(res.data);
     })
   };
+  // Hàm khi component được mount
   componentDidMount() {
     let params = {
       page: this.state.currentPage == null ? 0 : this.state.currentPage,
@@ -57,13 +62,13 @@ class Categories extends Component {
       this.setState({ totalRecords: res.data.TotalCount });
       this.props.getAllCategories(res.data);
     })
-
   };
-
   render() {
     const {
       pageLimit,
-      totalRecords, showCreateModal
+      totalRecords,
+      showModal,
+      CategoryID
     } = this.state;
     var { categories } = this.props;
     return (
@@ -73,7 +78,9 @@ class Categories extends Component {
             <Card>
               <CardHeader>
                 <i className="fa fa-folder"></i> Loại sản phẩm
-                <div className="float-xl-right"><CategoryCreate ref="child" reloadDataMethod={this.reloadData}></CategoryCreate></div><br></br>
+                <div className="float-xl-right">
+                  <Button className="btn-pill btn-outline-success" onClick={this.showCreateModal}><i className="fa fa-plus"></i> Thêm mới</Button>
+                  <CategoryCreate closeModal={this.closeModal} showModal={showModal} reloadDataMethod={this.reloadData} CategoryID={CategoryID}></CategoryCreate></div><br></br>
               </CardHeader>
               <CardBody>
                 <Col xl={4}>
@@ -130,7 +137,7 @@ class Categories extends Component {
             <td>{category.CategoryLevel}</td>
             <td>{category.ParentName}</td>
             <td>
-              <Button className="btn  btn-sm btn-info" onClick={() => this.showModal(category.CategoryID)}><i className="fa fa-pencil"></i></Button>
+              <Button className="btn  btn-sm btn-info" onClick={() => this.showEditModal(category.CategoryID)}><i className="fa fa-pencil"></i></Button>
               <Button className="btn  btn-sm btn-danger" onClick={() => this.DeleteCategories(category.CategoryID)}><i className="fa fa-trash"></i></Button>
 
             </td>
@@ -140,18 +147,27 @@ class Categories extends Component {
     }
     return result;
   }
-  showModal(data) {
-    this.refs.child.getWrappedInstance().toggleModal(data);
-
-
-  }
-  DeleteCategories(id) {
+  // Show edit form
+  showEditModal(CategoryId) {
     debugger;
+    this.setState({ showModal: true, CategoryID: CategoryId });
+  }
+  //show create form
+  showCreateModal() {
+    debugger;
+    this.setState({ showModal: true, CategoryID: null });
+  }
+  // close modal
+  closeModal() {
+    this.setState({ showModal: false });
+  }
+  //Delete modal
+  DeleteCategories(id) {
     this.props.onDeleteCategory(id);
   }
-  // End clas
+  // End class
 }
-
+// Redux
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getAllCategories: (data) => {

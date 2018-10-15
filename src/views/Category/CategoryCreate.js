@@ -17,24 +17,8 @@ class CategoryCreate extends Component {
         debugger;
         super(props);
         this.state = {
-            large: false,
             category: {},
-            CategoryID: props.CategoryID
         };
-        this.toggleModal = this.toggleModal.bind(this);
-
-    }
-    toggleModal(CategoryID = null) {
-        debugger;
-        if(typeof CategoryID == "number")
-        {
-            this.setState({
-                CategoryID: CategoryID,
-            });
-        }
-        this.setState({
-            large: !this.state.large,
-        });
     }
     inputOnChange = (e, key) => {
         let category = this.state.category;
@@ -47,20 +31,29 @@ class CategoryCreate extends Component {
         if (this.checkBtn.context._errors.length === 0) {
             this.props.onAddCategory(this.state.category);
 
-            this.toggleModal();
+            this.props.closeModal();
         }
-
-    };
+    }
+    componentWillReceiveProps(nextProps) {
+        debugger;
+        if (nextProps.CategoryID !== null && nextProps.showModal) {
+            categoryservice.getById(nextProps.CategoryID).then(res => {
+                this.setState({ category: res.data });
+                console.log(this.state.category);
+            });
+        }
+        else {
+            this.setState({ category: {}  });
+        }
+    }
     render() {
-        const {
-            CategoryID
-        } = this.state;
+        var { category } = this.state;
         return (
             <div className="animated fadeIn">
-                <Button className="btn-pill btn-outline-success" onClick={this.toggleModal}><i className="fa fa-plus"></i> Thêm mới</Button>
-                <Modal isOpen={this.state.large} toggle={this.toggleModal}
+
+                <Modal isOpen={this.props.showModal} toggle={this.props.closeModal}
                     className={'modal-lg ' + this.props.className}>
-                    <ModalHeader toggle={this.toggleModal}>Thêm mới loại sản phẩm {CategoryID}</ModalHeader>
+                    <ModalHeader toggle={this.props.closeModal}> Thêm mới loại sản phẩm </ModalHeader>
                     <ModalBody>
                         <Row>
                             <Col xs="12" md="12">
@@ -77,6 +70,7 @@ class CategoryCreate extends Component {
                                                         name="CategoryName"
                                                         placeholder="Tên loại sản phẩm"
                                                         className="form-control"
+                                                        value={category.CategoryID == null ? "" : category.CategoryName}
                                                         validations={[ValidateConst.required, ValidateConst.minLength(10)]}
                                                         onChange={(e) => this.inputOnChange(e, 'CategoryName')}
                                                     />
@@ -146,7 +140,7 @@ class CategoryCreate extends Component {
                                         <CardFooter>
 
                                             <Button type="submit" size="sm" color="primary"><i className="fa fa-save"></i> Lưu</Button>
-                                            <Button type="reset" size="sm" onClick={this.toggleModal} color="danger"><i className="fa fa-times"></i> Thoát</Button>
+                                            <Button type="reset" size="sm" onClick={this.props.closeModal} color="danger"><i className="fa fa-times"></i> Thoát</Button>
                                             <CheckButton style={{ display: 'none' }} ref={c => { this.checkBtn = c }} />
                                         </CardFooter>
                                     </Card>
@@ -170,5 +164,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
     }
 }
+export default connect(null, mapDispatchToProps)(CategoryCreate);
 // Thêm đoạn { withRef: true } để thằng có refs có thể gọi được
-export default connect(null, mapDispatchToProps, null, { withRef: true })(CategoryCreate);
+// export default connect(null, mapDispatchToProps, null, { withRef: true })(CategoryCreate);

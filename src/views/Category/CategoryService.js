@@ -16,3 +16,6 @@ export function getPaging(params) {
 export function addCategory(data) {
     return axios.post(`${Config.API_URL}/${endpoint}/create`, data);
 }
+export function getById(Id) {
+    return axios.get(`${Config.API_URL}/${endpoint}/detail/${Id}`);
+}
