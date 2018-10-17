@@ -3,7 +3,7 @@ import {
     Button, Card, CardBody, CardHeader, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row, Badge,
     FormGroup, Label, CardFooter, FormText
 } from 'reactstrap';
-import * as ValidateConst from './../../ultils/validator';
+import * as ValidateConst from '../../ultils/validator';
 import Form from 'react-validation/build/form';
 import Input from 'react-validation/build/input';
 import Textarea from 'react-validation/build/textarea';
@@ -30,7 +30,7 @@ class CategoryCreate extends Component {
         this.form.validateAll();
         if (this.checkBtn.context._errors.length === 0) {
             if (this.state.category.CategoryID) {
-                        
+
             }
             else {
                 this.props.onAddCategory(this.state.category);

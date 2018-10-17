@@ -4,7 +4,7 @@ import Loadable from 'react-loadable'
 import DefaultLayout from './containers/DefaultLayout';
 
 function Loading() {
-  return <div>Loading...</div>;
+  return <div>đang tải...</div>;
 }
 
 const Breadcrumbs = Loadable({
