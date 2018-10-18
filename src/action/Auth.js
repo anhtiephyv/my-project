@@ -6,12 +6,12 @@ export function login(loginForm) {
 debugger;
   return function (dispatch) {
    dispatch({ type: Types.AUTH_USER });
-   localStorage.setItem('token', 'Somevalue')
+   sessionStorage.setItem('token', 'Somevalue')
     // submit email and password to server
     // const request = callApi(`token`, 'POST', { username, password });
     // request.then(response => {
     //     // -Save the JWT token
-    //     localStorage.setItem('token', response.data.token)
+    //     sessionStorage.setItem('token', response.data.token)
     //     // -if request is good, we need to update state to indicate user is authenticated
     //     dispatch({ type: Types.AUTH_USER })
     //   })

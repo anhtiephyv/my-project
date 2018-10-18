@@ -9,7 +9,7 @@ export const PrivateRoute = ({ component: ComposedComponent, ...rest }) => {
     // redirect if not authenticated; otherwise, return the component imputted into <PrivateRoute />
     handleRender(props) {
       debugger;
-      if (!localStorage.getItem('token')) {
+      if (!this.props.authenticated) {
         return <Redirect to={{
           pathname: '/login',
           state: {

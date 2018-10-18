@@ -10,13 +10,19 @@ import { createStore, applyMiddleware } from 'redux';
 import appReducers from './reducer/index';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import * as Types from './constant/actionType';
 const store = createStore(
     appReducers,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     applyMiddleware(thunk)
 
 );
-ReactDOM.render(<Provider store={store}><App/></Provider>
+const token = sessionStorage.getItem('token')
+
+if (token) {
+    store.dispatch({ type: Types.AUTH_USER })
+}
+ReactDOM.render(<Provider store={store}><App /></Provider>
     , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
