@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
-
+import { PrivateRoute } from '../../ultils/PrivateRoute'
 import {
   AppAside,
   AppBreadcrumb,
@@ -42,7 +42,7 @@ class DefaultLayout extends Component {
             <Container fluid>
               <Switch>
                 {routes.map((route, idx) => {
-                    return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
+                    return route.component ? (<PrivateRoute key={idx} path={route.path} exact={route.exact} name={route.name} component={props => (
                         <route.component {...props} />
                       )} />)
                       : (null);

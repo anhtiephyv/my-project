@@ -1,27 +1,26 @@
 import axios from 'axios'
 import * as Types from '../constant/actionType';
 import * as callApi from '../ultils/apiCaller';
-
-export function signinUser({email, password}) {
-
+const ROOT_URL = 'http://localhost:3090';
+export function login(loginForm) {
+debugger;
   return function (dispatch) {
-
+   dispatch({ type: Types.AUTH_USER });
+   localStorage.setItem('token', 'Somevalue')
     // submit email and password to server
-    const request = axios.post(`${ROOT_URL}/signin`, {email, password})
-    request
-      .then(response => {
-        // -Save the JWT token
-        localStorage.setItem('token', response.data.token)
+    // const request = callApi(`token`, 'POST', { username, password });
+    // request.then(response => {
+    //     // -Save the JWT token
+    //     localStorage.setItem('token', response.data.token)
+    //     // -if request is good, we need to update state to indicate user is authenticated
+    //     dispatch({ type: Types.AUTH_USER })
+    //   })
 
-        // -if request is good, we need to update state to indicate user is authenticated
-        dispatch({type: AUTH_USER})
-      })
-
-      // If request is bad...
-      // -Show an error to the user
-      .catch(() => {
-        dispatch(authError('bad login info'))
-      })
+    //   // If request is bad...
+    //   // -Show an error to the user
+    //   .catch(() => {
+    //     dispatch(authError('bad login info'))
+    //   })
 
   }
 }
@@ -29,18 +28,18 @@ export function signinUser({email, password}) {
 export function signoutUser() {
   localStorage.removeItem('token')
   return {
-    type: UNAUTH_USER
+    type: Types.UNAUTH_USER
   }
 }
 
-export function signupUser({email, password, passwordConfirmation}) {
+export function signupUser({ email, password, passwordConfirmation }) {
   return function (dispatch) {
-    axios.post(`${ROOT_URL}/signup`, {email, password, passwordConfirmation})
+    callApi(`${ROOT_URL}/signup`, { email, password, passwordConfirmation })
       .then(response => {
-        dispatch({type: AUTH_USER})
+        dispatch({ type: Types.AUTH_USER })
         localStorage.setItem('token', response.data.token)
       })
-      .catch(({response}) => {
+      .catch(({ response }) => {
         dispatch(authError(response.data.error))
       })
   }
@@ -48,7 +47,7 @@ export function signupUser({email, password, passwordConfirmation}) {
 
 export function authError(error) {
   return {
-    type: AUTH_ERROR,
+    type: Types.AUTH_ERROR,
     payload: error
   }
 }
@@ -56,11 +55,11 @@ export function authError(error) {
 export function fetchMessage() {
   return function (dispatch) {
     axios.get(ROOT_URL, {
-      headers: {authorization: localStorage.getItem('token')}
+      headers: { authorization: localStorage.getItem('token') }
     })
       .then(response => {
         dispatch({
-          type: FETCH_MESSAGE,
+          type: Types.FETCH_MESSAGE,
           payload: response.data.message
         })
       })
