@@ -193,8 +193,34 @@ const Category = Loadable({
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
-  { id: 1, parentId: null, path: '/', exact: true, name: 'Home', component: DefaultLayout,permission:[] },
-  { id: 2, parentId: null, path: '/dashboard', name: 'Dashboard', component: Dashboard,permission:[] },
+  {
+    id: 1,
+    parentId: null,
+    path: '/',
+    exact: true,
+    name: 'Home',
+    component: DefaultLayout,
+    permission: [],
+    icon: 'icon-calculator',
+    badge: {
+      variant: 'info',
+      // text: 'NEW',
+    },
+  },
+  {
+    id: 2,
+    parentId: null,
+    path: '/dashboard',
+    url: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
+    icon: 'icon-calculator',
+    badge: {
+      variant: 'info',
+      // text: 'NEW',
+    },
+    permission: []
+  },
   // { path: '/theme', exact: true, name: 'Theme', component: Colors },
   // { path: '/theme/colors', name: 'Colors', component: Colors },
   // { path: '/theme/typography', name: 'Typography', component: Typography },
@@ -245,12 +271,13 @@ const routes = [
     badge: {
       variant: 'info',
     },
-    permission:['Category','Widgets']
+    permission: ['Category', 'Widgets']
   },
   {
     id: 4,
     parentId: null,
     path: '/category',
+    url: '/category',
     exact: true,
     name: 'Loại sản phẩm',
     component: Categories,
@@ -258,47 +285,15 @@ const routes = [
     badge: {
       variant: 'info',
     },
-    permission:['Category']
-  },
-  {
-    id: 5,
-    parentId: 4,
-    path: '/widgets',
-    name: 'Widgets',
-    component: Widgets,
-    icon: 'icon-calculator',
-    badge: {
-      variant: 'info',
-      text: 'NEW',
-    },
-    permission:['Widgets']
+    permission: ['Category']
   },
 ];
-function list_to_tree(list) {
-  var map = {}, node, roots = [], i;
-  for (i = 0; i < list.length; i += 1) {
-      map[list[i].id] = i; // initialize the map
-      list[i].children = []; // initialize the children
-  }
-  for (i = 0; i < list.length; i += 1) {
-      node = list[i];
-      if (node.parentId !== null) {
-          // if you have dangling branches check that map[node.parentId] exists
-          list[map[node.parentId]].children.push(node);
-      } else {
-          roots.push(node);
-      }
-  }
-  return roots;
-}
+// Modules to tree
 const Permission = ['Widgets'];
 function getPermission(list) {
-  for (let i = 0; i < list.length; i++) { 
-    let found = list[i].permission.some(r=> Permission.indexOf(r) >= 0);
-    debugger;
+  for (let i = 0; i < list.length; i++) {
+    let found = list[i].permission.some(r => Permission.indexOf(r) >= 0);
+  }
 }
-  
-}
-console.log(list_to_tree(routes));
-console.log(getPermission(routes));
+//const routes = Module_to_tree(modules);
 export default routes;
