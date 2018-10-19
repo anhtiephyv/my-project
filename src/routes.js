@@ -186,7 +186,6 @@ const Categories = Loadable({
   loader: () => import('./views/Category/Categories'),
   loading: Loading,
 });
-// Bắt đầu quẩy
 const Category = Loadable({
   loader: () => import('./views/Category/Category'),
   loading: Loading,
@@ -194,49 +193,112 @@ const Category = Loadable({
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
-  { path: '/', exact: true, name: 'Home', component: DefaultLayout },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  { path: '/theme', exact: true, name: 'Theme', component: Colors },
-  { path: '/theme/colors', name: 'Colors', component: Colors },
-  { path: '/theme/typography', name: 'Typography', component: Typography },
-  { path: '/base', exact: true, name: 'Base', component: Cards },
-  { path: '/base/cards', name: 'Cards', component: Cards },
-  { path: '/base/forms', name: 'Forms', component: Forms },
-  { path: '/base/switches', name: 'Switches', component: Switches },
-  { path: '/base/tables', name: 'Tables', component: Tables },
-  { path: '/base/tabs', name: 'Tabs', component: Tabs },
-  { path: '/base/breadcrumbs', name: 'Breadcrumbs', component: Breadcrumbs },
-  { path: '/base/carousels', name: 'Carousel', component: Carousels },
-  { path: '/base/collapses', name: 'Collapse', component: Collapses },
-  { path: '/base/dropdowns', name: 'Dropdowns', component: Dropdowns },
-  { path: '/base/jumbotrons', name: 'Jumbotrons', component: Jumbotrons },
-  { path: '/base/list-groups', name: 'List Groups', component: ListGroups },
-  { path: '/base/navbars', name: 'Navbars', component: Navbars },
-  { path: '/base/navs', name: 'Navs', component: Navs },
-  { path: '/base/paginations', name: 'Paginations', component: Paginations },
-  { path: '/base/popovers', name: 'Popovers', component: Popovers },
-  { path: '/base/progress-bar', name: 'Progress Bar', component: ProgressBar },
-  { path: '/base/tooltips', name: 'Tooltips', component: Tooltips },
-  { path: '/buttons', exact: true, name: 'Buttons', component: Buttons },
-  { path: '/buttons/buttons', name: 'Buttons', component: Buttons },
-  { path: '/buttons/button-dropdowns', name: 'Button Dropdowns', component: ButtonDropdowns },
-  { path: '/buttons/button-groups', name: 'Button Groups', component: ButtonGroups },
-  { path: '/buttons/brand-buttons', name: 'Brand Buttons', component: BrandButtons },
-  { path: '/icons', exact: true, name: 'Icons', component: CoreUIIcons },
-  { path: '/icons/coreui-icons', name: 'CoreUI Icons', component: CoreUIIcons },
-  { path: '/icons/flags', name: 'Flags', component: Flags },
-  { path: '/icons/font-awesome', name: 'Font Awesome', component: FontAwesome },
-  { path: '/icons/simple-line-icons', name: 'Simple Line Icons', component: SimpleLineIcons },
-  { path: '/notifications', exact: true, name: 'Notifications', component: Alerts },
-  { path: '/notifications/alerts', name: 'Alerts', component: Alerts },
-  { path: '/notifications/badges', name: 'Badges', component: Badges },
-  { path: '/notifications/modals', name: 'Modals', component: Modals },
-  { path: '/widgets', name: 'Widgets', component: Widgets },
-  { path: '/charts', name: 'Charts', component: Charts },
-  { path: '/users', exact: true,  name: 'Users', component: Users },
-  { path: '/users/:id', exact: true, name: 'User Details', component: User },
-  { path: '/category', exact: true,  name: 'Loại sản phẩm', component: Categories },
-  { path: '/category/:id', exact: true, name: 'Loại sản phẩm', component: Category },
+  { id: 1, parentId: null, path: '/', exact: true, name: 'Home', component: DefaultLayout,permission:[] },
+  { id: 2, parentId: null, path: '/dashboard', name: 'Dashboard', component: Dashboard,permission:[] },
+  // { path: '/theme', exact: true, name: 'Theme', component: Colors },
+  // { path: '/theme/colors', name: 'Colors', component: Colors },
+  // { path: '/theme/typography', name: 'Typography', component: Typography },
+  // { path: '/base', exact: true, name: 'Base', component: Cards },
+  // { path: '/base/cards', name: 'Cards', component: Cards },
+  // { path: '/base/forms', name: 'Forms', component: Forms },
+  // { path: '/base/switches', name: 'Switches', component: Switches },
+  // { path: '/base/tables', name: 'Tables', component: Tables },
+  // { path: '/base/tabs', name: 'Tabs', component: Tabs },
+  // { path: '/base/breadcrumbs', name: 'Breadcrumbs', component: Breadcrumbs },
+  // { path: '/base/carousels', name: 'Carousel', component: Carousels },
+  // { path: '/base/collapses', name: 'Collapse', component: Collapses },
+  // { path: '/base/dropdowns', name: 'Dropdowns', component: Dropdowns },
+  // { path: '/base/jumbotrons', name: 'Jumbotrons', component: Jumbotrons },
+  // { path: '/base/list-groups', name: 'List Groups', component: ListGroups },
+  // { path: '/base/navbars', name: 'Navbars', component: Navbars },
+  // { path: '/base/navs', name: 'Navs', component: Navs },
+  // { path: '/base/paginations', name: 'Paginations', component: Paginations },
+  // { path: '/base/popovers', name: 'Popovers', component: Popovers },
+  // { path: '/base/progress-bar', name: 'Progress Bar', component: ProgressBar },
+  // { path: '/base/tooltips', name: 'Tooltips', component: Tooltips },
+  // { path: '/buttons', exact: true, name: 'Buttons', component: Buttons },
+  // { path: '/buttons/buttons', name: 'Buttons', component: Buttons },
+  // { path: '/buttons/button-dropdowns', name: 'Button Dropdowns', component: ButtonDropdowns },
+  // { path: '/buttons/button-groups', name: 'Button Groups', component: ButtonGroups },
+  // { path: '/buttons/brand-buttons', name: 'Brand Buttons', component: BrandButtons },
+  // { path: '/icons', exact: true, name: 'Icons', component: CoreUIIcons },
+  // { path: '/icons/coreui-icons', name: 'CoreUI Icons', component: CoreUIIcons },
+  // { path: '/icons/flags', name: 'Flags', component: Flags },
+  // { path: '/icons/font-awesome', name: 'Font Awesome', component: FontAwesome },
+  // { path: '/icons/simple-line-icons', name: 'Simple Line Icons', component: SimpleLineIcons },
+  // { path: '/notifications', exact: true, name: 'Notifications', component: Alerts },
+  // { path: '/notifications/alerts', name: 'Alerts', component: Alerts },
+  // { path: '/notifications/badges', name: 'Badges', component: Badges },
+  // { path: '/notifications/modals', name: 'Modals', component: Modals },
+  // { path: '/widgets', name: 'Widgets', component: Widgets },
+  // { path: '/charts', name: 'Charts', component: Charts },
+  // { path: '/users', exact: true,  name: 'Users', component: Users },
+  // { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  {
+    id: 3,
+    parentId: null,
+    path: '/category/:id',
+    exact: true,
+    name: 'Loại sản phẩm',
+    component: Category,
+    icon: 'icon-speedometer',
+    badge: {
+      variant: 'info',
+    },
+    permission:['Category','Widgets']
+  },
+  {
+    id: 4,
+    parentId: null,
+    path: '/category',
+    exact: true,
+    name: 'Loại sản phẩm',
+    component: Categories,
+    icon: 'icon-speedometer',
+    badge: {
+      variant: 'info',
+    },
+    permission:['Category']
+  },
+  {
+    id: 5,
+    parentId: 4,
+    path: '/widgets',
+    name: 'Widgets',
+    component: Widgets,
+    icon: 'icon-calculator',
+    badge: {
+      variant: 'info',
+      text: 'NEW',
+    },
+    permission:['Widgets']
+  },
 ];
-
+function list_to_tree(list) {
+  var map = {}, node, roots = [], i;
+  for (i = 0; i < list.length; i += 1) {
+      map[list[i].id] = i; // initialize the map
+      list[i].children = []; // initialize the children
+  }
+  for (i = 0; i < list.length; i += 1) {
+      node = list[i];
+      if (node.parentId !== null) {
+          // if you have dangling branches check that map[node.parentId] exists
+          list[map[node.parentId]].children.push(node);
+      } else {
+          roots.push(node);
+      }
+  }
+  return roots;
+}
+const Permission = ['Widgets'];
+function getPermission(list) {
+  for (let i = 0; i < list.length; i++) { 
+    let found = list[i].permission.some(r=> Permission.indexOf(r) >= 0);
+    debugger;
+}
+  
+}
+console.log(list_to_tree(routes));
+console.log(getPermission(routes));
 export default routes;
