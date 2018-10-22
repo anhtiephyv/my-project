@@ -14,7 +14,6 @@ import { actAddCategoryRequest } from './../../action/Category';
 import * as categoryservice from './CategoryService';
 class CategoryCreate extends Component {
     constructor(props) {
-        debugger;
         super(props);
         this.state = {
             category: {},
@@ -177,7 +176,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onAddCategory: (category) => {
             debugger;
             categoryservice.addCategory(category).then(res => {
-                ownProps.reloadDataMethod()
+              //  ownProps.reloadDataMethod()
             });
         },
     }

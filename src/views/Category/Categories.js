@@ -47,20 +47,17 @@ class Categories extends Component {
     this.props.getAllCategories(params);
   };
   // Hàm khi component được mount
-  componentDidMount() {
-    let params = {
-      page: this.state.currentPage == null ? 0 : this.state.currentPage,
-      pageSize: this.state.pageLimit == null ? 10 : this.state.pageLimit,
-      orderby: "CategoryID",
-      sortDir: "desc",
-      filter: null,
-      keyword: null,
-    };
-    categoryservice.getPaging(params).then(res => {
-      //     this.setState({ totalRecords: res.data.TotalCount });
-      this.props.getAllCategories(res.data);
-    })
-  };
+  // componentDidMount() {
+  //   let params = {
+  //     page: this.state.currentPage == null ? 0 : this.state.currentPage,
+  //     pageSize: this.state.pageLimit == null ? 10 : this.state.pageLimit,
+  //     orderby: "CategoryID",
+  //     sortDir: "desc",
+  //     filter: null,
+  //     keyword: null,
+  //   };
+  //   this.props.getAllCategories(params);
+  // };
   render() {
     const {
       pageLimit,

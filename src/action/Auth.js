@@ -5,26 +5,25 @@ const ROOT_URL = 'http://localhost:3090';
 export function login(loginForm) {
   return function (dispatch) {
 
-      dispatch({ type: Types.AUTH_USER });
-      sessionStorage.setItem('token', 'Somevalue');
+      // dispatch({ type: Types.AUTH_USER });
+      // sessionStorage.setItem('token', 'Somevalue');
    
 
-    // submit email and password to server
-    // var data = "username=" + loginForm.username + "&password=" + loginForm.password + "&grant_type=password";
-    // const request = callApi.getAuth(`token`, 'POST',  data);
-    // request.then(response => {
-    //   debugger;
-    //     // -Save the JWT token
-    //     sessionStorage.setItem('token', response.data.access_token)
-    //     // -if request is good, we need to update state to indicate user is authenticated
-    //     dispatch({ type: Types.AUTH_USER })
-    //   })
+  //  submit email and password to server
+    var data = "username=" + loginForm.username + "&password=" + loginForm.password + "&grant_type=password";
+    const request = callApi.getAuth(`token`, 'POST',  data);
+    request.then(response => {
+        // -Save the JWT token
+        sessionStorage.setItem('token', response.data.access_token);
+        // -if request is good, we need to update state to indicate user is authenticated
+        dispatch({ type: Types.AUTH_USER })
+      })
 
-    //   // If request is bad...
-    //   // -Show an error to the user
-    //   .catch(() => {
-    //     dispatch(authError('bad login info'))
-    //   })
+      // If request is bad...
+      // -Show an error to the user
+      .catch(() => {
+        dispatch(authError('Đăng nhập thất bại, vui lòng kiểm tra kết nối hoặc username,password'))
+      })
 
   }
 }

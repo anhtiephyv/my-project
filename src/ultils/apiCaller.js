@@ -18,7 +18,7 @@ export  function getAuth(endpoint, medthod = 'POST', data) {
         data: data
     }).catch(err => { console.log(err) });
 }
-export  function get(endpoint, medthod = 'GET', params) {
+export  function get(endpoint, params) {
     return axios.get(`${Config.API_URL}/${endpoint}`, {
         params: params
       });

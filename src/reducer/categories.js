@@ -36,8 +36,8 @@ var finIndex = (categories, id) => {
 
 export default function categories(state = { categories: initialState, totalRecords: 0 }, action) {
     var index = -1;
-    let { id } = action;
     debugger;
+    let { id } = action;
     switch (action.type) {
         case Types.GetAllCategories: {
             return { ...state, categories: action.categories, totalRecords: action.totalRecords }

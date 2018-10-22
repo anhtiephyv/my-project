@@ -19,7 +19,7 @@ class Login extends Component {
     this.setState({ loginForm });
   };
   render() {
-
+    var { error } = this.props;
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -30,7 +30,7 @@ class Login extends Component {
                   <CardBody>
                     <Form method="post" encType="multipart/form-data" className="form-horizontal" onSubmit={(e) => this.login(e)} ref={c => { this.form = c }}>
                       <h1>Đăng nhập</h1>
-                      <p className="text-muted">Đăng nhập bằng tài khoản</p>
+                      <p className="text-muted red">{error}</p>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
@@ -60,6 +60,7 @@ class Login extends Component {
                           onChange={(e) => this.inputOnChange(e, 'password')}
                           name='password' />
                       </InputGroup>
+                     
                       <Row>
                         <Col xs="6">
                           <Button color="primary" className="px-4">Đăng nhập</Button>
@@ -104,5 +105,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(login(loginForm));
     },
   }
+
 }
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = state => {
+  return {
+    error: state.auth.error,
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
