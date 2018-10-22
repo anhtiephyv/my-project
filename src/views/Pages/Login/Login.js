@@ -54,7 +54,7 @@ class Login extends Component {
                         </InputGroupAddon>
                         <Input
                           className="form-control"
-                          validations={[ValidateConst.required, ValidateConst.minLength(10)]}
+                          validations={[ValidateConst.required]}
                           type="password" placeholder="Password"
                           autoComplete="current-password"
                           onChange={(e) => this.inputOnChange(e, 'password')}
