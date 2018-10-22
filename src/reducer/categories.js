@@ -9,26 +9,49 @@ var finIndex = (categories, id) => {
     })
     return result;
 }
-const categories = (state = initialState, action) => {
+// const categories = (state = initialState, action) => {
+//     var index = -1;
+//     let { id } = action;
+//     switch (action.type) {
+//         case Types.GetAllCategories: {
+//             state = action.categories;
+//             return [...state];
+//         }
+//         case Types.AddCategory: {
+//             debugger;
+//             state.push(action.category)
+//             return [...state];
+//         }
+//         case Types.DeleteCategory: {
+//             index = finIndex(state, id);
+//             state.splice(index, 1);
+//             return [...state];
+//         }
+//         default: return [...state];
+//     }
+// };
+
+// export default categories;
+//import * as Types from '../constant/actionType'
+
+export default function categories(state = { categories: initialState, totalRecords: 0 }, action) {
     var index = -1;
     let { id } = action;
+    debugger;
     switch (action.type) {
         case Types.GetAllCategories: {
-            state = action.categories;
-            return [...state];
+            return { ...state, categories: action.categories, totalRecords: action.totalRecords }
         }
         case Types.AddCategory: {
-            debugger;
-            state.push(action.category)
+            state.categories.push(action.category)
             return [...state];
         }
         case Types.DeleteCategory: {
-            index = finIndex(state, id);
-            state.splice(index, 1);
+            index = finIndex(state.categories, id);
+            state.categories.splice(index, 1);
             return [...state];
         }
-        default: return [...state];
+        default:  return state;
     }
-};
+}
 
-export default categories;

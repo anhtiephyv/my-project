@@ -12,7 +12,7 @@ class Categories extends Component {
     this.state = {
       currentPage: null,
       totalPages: 0,
-      totalRecords: 0,
+      //  totalRecords: 0,
       pageLimit: 5, keyword: null,
       showModal: false,
       CategoryID: null,
@@ -36,17 +36,15 @@ class Categories extends Component {
   }
   // Reload lại data
   reloadData() {
-    categoryservice.getPaging({
+    let params = {
       page: this.state.currentPage == null ? 0 : this.state.currentPage,
       pageSize: this.state.pageLimit == null ? 10 : this.state.pageLimit,
       orderby: "CategoryID",
       sortDir: "desc",
       filter: null,
       keyword: null,
-    }).then(res => {
-      this.setState({ totalRecords: res.data.TotalCount });
-      this.props.getAllCategories(res.data);
-    })
+    }
+    this.props.getAllCategories(params);
   };
   // Hàm khi component được mount
   componentDidMount() {
@@ -59,18 +57,18 @@ class Categories extends Component {
       keyword: null,
     };
     categoryservice.getPaging(params).then(res => {
-      this.setState({ totalRecords: res.data.TotalCount });
+      //     this.setState({ totalRecords: res.data.TotalCount });
       this.props.getAllCategories(res.data);
     })
   };
   render() {
     const {
       pageLimit,
-      totalRecords,
       showModal,
       CategoryID
     } = this.state;
-    var { categories } = this.props;
+    var { categories, totalRecords } = this.props;
+
     return (
       <div className="animated fadeIn">
         <Row>
@@ -170,8 +168,8 @@ class Categories extends Component {
 // Redux
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    getAllCategories: (data) => {
-      dispatch(actGetAllCategoryRequest(data));
+    getAllCategories: (params) => {
+      dispatch(actGetAllCategoryRequest(params));
     },
     onDeleteCategory: (id) => {
       dispatch(actDeleteCategoryRequest(id))
@@ -180,7 +178,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 const mapStateToProps = state => {
   return {
-    categories: state.categories
+    categories: state.categories.categories,
+    totalRecords: state.categories.totalRecords
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Categories);

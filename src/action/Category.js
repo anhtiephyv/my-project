@@ -1,16 +1,24 @@
 import * as Types from '../constant/actionType';
 import * as callApi from '../ultils/apiCaller';
 // Get danh sách
-export const actGetAllCategoryRequest = (data) => {
+export const actGetAllCategoryRequest = (params) => {
     return (dispatch) => {
-        dispatch(actGetAllCategory(data));
+        callApi.get('Category/getlistpaging', {
+            params: params
+        }).then(
+            res => {
+                dispatch(actGetAllCategory(res.data));
+            }
+        );
     }
 }
 /// GetPaging
 export const actGetAllCategory = (categories) => {
+    debugger;
     return {
         type: Types.GetAllCategories,
         categories: categories.Items,
+        totalRecords: categories.totalRecords
     }
 }
 // Thêm 

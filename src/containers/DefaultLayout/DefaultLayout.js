@@ -24,7 +24,6 @@ import DefaultHeader from './DefaultHeader';
 
 class DefaultLayout extends Component {
   render() {
-    console.log(navigation);
     return (
       <div className="app">
         <AppHeader fixed>

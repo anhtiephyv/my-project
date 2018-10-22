@@ -62,7 +62,7 @@ class Login extends Component {
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button  color="primary" className="px-4">Đăng nhập</Button>
+                          <Button color="primary" className="px-4">Đăng nhập</Button>
                           <CheckButton style={{ display: 'none' }} ref={c => { this.checkBtn = c }} />
                         </Col>
                         <Col xs="6" className="text-right">
