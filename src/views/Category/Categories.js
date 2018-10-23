@@ -72,7 +72,7 @@ class Categories extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-folder"></i> Loại sản phẩm
+                <i className="fa fa-folder"></i> Loại sản phẩm {totalRecords}
                 <div className="float-xl-right">
                   <Button className="btn-pill btn-outline-success" onClick={this.showCreateModal}><i className="fa fa-plus"></i> Thêm mới</Button>
                   <CategoryCreate closeModal={this.closeModal} showModal={showModal} reloadDataMethod={this.reloadData} CategoryID={CategoryID}></CategoryCreate></div><br></br>
@@ -104,7 +104,7 @@ class Categories extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {this.showcategory(categories)}
+                        {this.showcategory(categories, pageLimit)}
                       </tbody>
                     </Table>
                     <div>
@@ -121,16 +121,19 @@ class Categories extends Component {
     )
   }
   // function here
-  showcategory(categories) {
+  showcategory(categories, pageLimit) {
     var result = null;
     if (categories != null && categories.length > 0) {
+      if (categories.length > pageLimit) {
+        categories = categories.slice(0, pageLimit);
+      }
       result = categories.map((category, index) => {
         return (
           <tr key={index}>
             <td>{category.CategoryID}</td>
             <td>{category.CategoryName}</td>
             <td>{category.CategoryLevel}</td>
-            <td>{category.ParentName}</td>
+            <td>{category.ParentName} {pageLimit}</td>
             <td>
               <Button className="btn  btn-sm btn-info" onClick={() => this.showEditModal(category.CategoryID)}><i className="fa fa-pencil"></i></Button>
               <Button className="btn  btn-sm btn-danger" onClick={() => this.DeleteCategories(category.CategoryID)}><i className="fa fa-trash"></i></Button>

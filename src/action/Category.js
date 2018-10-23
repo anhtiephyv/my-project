@@ -6,7 +6,7 @@ export const actGetAllCategoryRequest = (params) => {
     return (dispatch) => {
         callApi.get('category/getlistpaging', params).then(
             res => {
-                dispatch(actGetAllCategory(res.data));
+                //dispatch(actGetAllCategory(res.data));
             }
         );
     }
@@ -24,9 +24,10 @@ export const actGetAllCategory = (categories) => {
 export const actAddCategoryRequest = (category) => {
     return (dispatch) => {
         debugger;
-        return callApi.post('Category/create', 'POST', category).then(res => {
-            dispatch(actAddCategory(res.data));
-        })
+        // return callApi.post('Category/create', 'POST', category).then(res => {
+        //     dispatch(actAddCategory(res.data));
+        // })
+        dispatch(actAddCategory(category));
     }
 }
 export const actAddCategory = (category) => {

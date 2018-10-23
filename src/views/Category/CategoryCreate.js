@@ -174,10 +174,7 @@ class CategoryCreate extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         onAddCategory: (category) => {
-            debugger;
-            categoryservice.addCategory(category).then(res => {
-              //  ownProps.reloadDataMethod()
-            });
+            dispatch(actAddCategoryRequest(category));
         },
     }
 }

@@ -43,15 +43,18 @@ export default function categories(state = { categories: initialState, totalReco
             return { ...state, categories: action.categories, totalRecords: action.totalRecords }
         }
         case Types.AddCategory: {
-            state.categories.push(action.category)
-            return [...state];
+            debugger;
+            state.categories.unshift(action.category);
+            // state.totalRecords = state.totalRecords+1;
+            return { ...state, totalRecords: state.totalRecords + 1 }
+            //  return state;
         }
         case Types.DeleteCategory: {
             index = finIndex(state.categories, id);
             state.categories.splice(index, 1);
             return [...state];
         }
-        default:  return state;
+        default: return state;
     }
 }
 
