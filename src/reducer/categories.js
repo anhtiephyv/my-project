@@ -36,14 +36,13 @@ var finIndex = (categories, id) => {
 
 export default function categories(state = { categories: initialState, totalRecords: 0 }, action) {
     var index = -1;
-    debugger;
     let { id } = action;
     switch (action.type) {
         case Types.GetAllCategories: {
+            debugger;
             return { ...state, categories: action.categories, totalRecords: action.totalRecords }
         }
         case Types.AddCategory: {
-            debugger;
             state.categories.unshift(action.category);
             // state.totalRecords = state.totalRecords+1;
             return { ...state, totalRecords: state.totalRecords + 1 }

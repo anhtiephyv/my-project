@@ -1,13 +1,7 @@
 import axios from 'axios';
 import * as Config from './../constant/Config';
-export  function post(endpoint, medthod = 'POST', data) {
-    return axios({
-        headers:
-        { 'Content-Type': 'application/x-www-form-urlencoded', },
-        method: medthod,
-        url: `${Config.API_URL}/${endpoint}`,
-        data: data
-    }).catch(err => { console.log(err) });
+export  function post(endpoint, data) {
+    return axios.post(`${Config.API_URL}/${endpoint}`, data);
 }
 export  function getAuth(endpoint, medthod = 'POST', data) {
     return axios({
