@@ -10,8 +10,9 @@ import Textarea from 'react-validation/build/textarea';
 import Select from 'react-validation/build/select';
 import CheckButton from 'react-validation/build/button';
 import { connect } from 'react-redux';
-import { actAddCategoryRequest } from './../../action/Category';
+import { actAddCategoryRequest,actUpdateCategoryRequest } from './../../action/Category';
 import * as categoryservice from './CategoryService';
+import * as notification from '../../ultils/notification';
 class CategoryCreate extends Component {
     constructor(props) {
         super(props);
@@ -29,13 +30,17 @@ class CategoryCreate extends Component {
         this.form.validateAll();
         if (this.checkBtn.context._errors.length === 0) {
             if (this.state.category.CategoryID) {
-
+                actUpdateCategoryRequest(this.state.category).then(()=>{
+                    this.props.reloadDataMethod();
+                    notification.success("Cập nhật thành công",null,3000);
+                 });
             }
             else {
-                this.props.onAddCategory(this.state.category);
+                actAddCategoryRequest(this.state.category).then(()=>{
+                    this.props.reloadDataMethod();
+                    notification.success("Thêm mới thành công",null,3000);
+                 });
             }
-
-
             this.props.closeModal();
         }
     }

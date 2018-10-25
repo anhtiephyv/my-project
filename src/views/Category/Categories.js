@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table, Button, Input, Form, FormGroup } from 'reactstrap';
 import { connect } from 'react-redux';
 import { actGetAllCategoryRequest, actDeleteCategoryRequest } from '../../action/Category';
-import Pagination from './../../ultils/Pagination';
-import * as categoryservice from './CategoryService'
 import CategoryCreate from './CategoryCreate';
 import ReactTable from "react-table";
+import * as notification from '../../ultils/notification';
+import {NotificationContainer} from 'react-notifications';
 import 'react-table/react-table.css';
-import _ from "lodash";
 class Categories extends Component {
   constructor(props) {
     super(props);
@@ -129,7 +128,7 @@ class Categories extends Component {
                           accessor: d => (
                             <div>
                               <Button className="btn  btn-sm btn-info" onClick={() => this.showEditModal(d.CategoryID)}><i className="fa fa-pencil"></i></Button>
-                              <Button className="btn  btn-sm btn-danger" onClick={() => this.DeleteCategories(d.CategoryID)}><i className="fa fa-trash"></i></Button>
+                              <Button className="btn  btn-sm btn-danger" onClick={() =>  {if (window.confirm('Bạn có chắc chắn muốn xóa bản ghi này?')) this.DeleteCategories(d.CategoryID)}}><i className="fa fa-trash"></i></Button>
                             </div>
                           )
                         }
@@ -159,7 +158,7 @@ class Categories extends Component {
             </Card>
           </Col>
         </Row>
-
+        <NotificationContainer/>
       </div>
     )
   }
@@ -177,9 +176,14 @@ class Categories extends Component {
   closeModal() {
     this.setState({ showModal: false });
   }
-  //Delete modal
+  //Delete category
   DeleteCategories(id) {
-    this.props.onDeleteCategory(id);
+    actDeleteCategoryRequest(id).then(()=>{
+      this.reloadData();
+      notification.success("Xóa thành công",null,3000);
+   }).catch(()=> {
+    notification.error("Xóa không thành công",null,3000);
+   });
   }
   // End class
 }
@@ -188,9 +192,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getAllCategories: (params) => {
       dispatch(actGetAllCategoryRequest(params));
-    },
-    onDeleteCategory: (id) => {
-      dispatch(actDeleteCategoryRequest(id))
     }
   }
 }
