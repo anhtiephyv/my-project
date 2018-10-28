@@ -1,1 +1,14 @@
-
+/* Add custom css */
+/* Treeview */
+.deni-react-treeview-container {
+    font-family: tahoma,arial;
+    font-size: 12px;
+    padding: 0px;
+    overflow-x: auto;
+    overflow-y: auto;
+    border: solid 1px;
+    border-color: #a5c7e3;
+    width: 100% !important;
+    height: auto !important;
+    background-color: #fafafa;
+  }

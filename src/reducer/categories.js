@@ -42,6 +42,11 @@ export default function categories(state = { categories: initialState, totalReco
             debugger;
             return { ...state, categories: action.categories, totalRecords: action.totalRecords }
         }
+        case Types.getCategoryTree: {
+            debugger;
+            return { ...state, categoriesTree: action.categoriesTree }
+        }
+        
         // case Types.AddCategory: {
         //     state.categories.unshift(action.category);
         //     // state.totalRecords = state.totalRecords+1;

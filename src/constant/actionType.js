@@ -5,6 +5,7 @@ export const UpdateCategory = 'updatecategory';
 export const DeleteCategory = 'deleteCategory';
 export const DeleteCategories = 'deleteCategories';
 export const SetTotalCount = 'setTotalCount';
+export const getCategoryTree = 'getcategorytree';
 /// Auth
 export const AUTH_USER = 'auth_user';
 export const UNAUTH_USER = 'unauth_user';

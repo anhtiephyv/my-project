@@ -30,3 +30,20 @@ export const actUpdateCategoryRequest = (category) => {
 export const actDeleteCategoryRequest = (id) => {
         return Promise.resolve(callApi.deleteItem(`Category/delete`, id));
 }
+// Get tree
+export const actgetCategoryTreeRequest = (ParentCategory) => {
+    return (dispatch) => {
+        callApi.get('category/GetTreeData', ParentCategory).then(
+            res => {
+                dispatch(actgetCategoryTree(res.data));
+            }
+        );
+    }
+}
+/// GetPaging
+export const actgetCategoryTree = (data) => {
+    return {
+        type: Types.getCategoryTree,
+        categoriesTree: data,
+    }
+}

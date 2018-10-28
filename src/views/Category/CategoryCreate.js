@@ -10,14 +10,51 @@ import Textarea from 'react-validation/build/textarea';
 import Select from 'react-validation/build/select';
 import CheckButton from 'react-validation/build/button';
 import { connect } from 'react-redux';
-import { actAddCategoryRequest,actUpdateCategoryRequest } from './../../action/Category';
+import { actAddCategoryRequest, actUpdateCategoryRequest, actgetCategoryTreeRequest } from './../../action/Category';
 import * as categoryservice from './CategoryService';
 import * as notification from '../../ultils/notification';
+import TreeView from 'deni-react-treeview';
 class CategoryCreate extends Component {
+    fruitsAndVegetables = [
+        {
+            id: 100,
+            text: 'Fruits',
+            children: [
+                {
+                    id: 101,
+                    text: 'Orange',
+                    isLeaf: true
+                },
+                {
+                    id: 102,
+                    text: 'Banana',
+                    isLeaf: true
+                }
+            ]
+        },
+        {
+            id: 200,
+            text: 'Vegetables',
+            children: [
+                {
+                    id: 201,
+                    text: 'Carrot',
+                    isLeaf: true
+                },
+                {
+                    id: 202,
+                    text: 'Tomato',
+                    isLeaf: true
+                }
+            ]
+        }
+    ];
     constructor(props) {
+        debugger;
         super(props);
         this.state = {
             category: {},
+            categoriesTree: this.props.categoriesTree
         };
     }
     inputOnChange = (e, key) => {
@@ -25,23 +62,45 @@ class CategoryCreate extends Component {
         category[key] = e.target.value;
         this.setState({ category });
     };
+    treeOnChange = (e, key) => {
+        debugger;
+        let category = this.state.category;
+        category['ParentName'] = e.text;
+        category['ParentCategory'] = e.id;
+        this.setState({ category });
+    };
     createData = (e) => {
         e.preventDefault();
         this.form.validateAll();
         if (this.checkBtn.context._errors.length === 0) {
             if (this.state.category.CategoryID) {
-                actUpdateCategoryRequest(this.state.category).then(()=>{
+                actUpdateCategoryRequest(this.state.category).then(() => {
                     this.props.reloadDataMethod();
-                    notification.success("Cập nhật thành công",null,3000);
-                 });
+                    notification.success("Cập nhật thành công", null, 3000);
+                });
             }
             else {
-                actAddCategoryRequest(this.state.category).then(()=>{
+                actAddCategoryRequest(this.state.category).then(() => {
                     this.props.reloadDataMethod();
-                    notification.success("Thêm mới thành công",null,3000);
-                 });
+                    notification.success("Thêm mới thành công", null, 3000);
+                });
             }
             this.props.closeModal();
+        }
+    }
+    removeParent = () => {
+        let api = this.refs.treeview.api;
+        debugger;
+        let selectedItem = api.getSelectedItem();
+        let category = this.state.category;
+
+
+        if (selectedItem) {
+            api.selectItem(null);
+            category['ParentName'] = null;
+            category['ParentCategory'] = null;
+        } else {
+            notification.error("Bạn chưa chọn loại cha nào!", null, 2000);
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -56,8 +115,12 @@ class CategoryCreate extends Component {
             this.setState({ category: {} });
         }
     }
+    componentDidMount() {
+        this.props.getGetCategoryRequest(null);
+    };
     render() {
         var { category } = this.state;
+        var { categoriesTree } = this.props;
         return (
             <div className="animated fadeIn">
 
@@ -97,18 +160,34 @@ class CategoryCreate extends Component {
                                                 <Col md="3">
                                                     <Label className="float-right" htmlFor="text-input">Loại cha</Label>
                                                 </Col>
-                                                <Col xs="12" md="9">
+                                                <Col xs="4" md="3">
                                                     <Input
                                                         type="text"
                                                         id="email-input"
                                                         name="ParentName"
-                                                        placeholder="loại cha"
-                                                        value={category.ParentCategory == null ? "" : category.ParentCategory}
+                                                        value={category.ParentName == null ? "" : category.ParentName}
                                                         className="form-control"
-                                                        onChange={(e) => this.inputOnChange(e, 'ParentCategory')} />
+                                                        //         onChange={(e) => this.inputOnChange(e, 'ParentName')}
+                                                        disabled />
+                                                </Col>
+                                                <Col xs="4" md="3">
+                                                    <Button type="button" onClick={() => this.removeParent()} color="danger"><i className="fa fa-trash"></i> Xóa cha</Button>
+                                                </Col>
+
+
+                                            </FormGroup>
+                                            <FormGroup row>
+                                                <Col md="3">
+
+                                                </Col>
+                                                <Col xs="12" md="9">
+                                                    <TreeView
+                                                        items={this.fruitsAndVegetables}
+                                                        showIcon={false}
+                                                        ref="treeview"
+                                                        onSelectItem={(e) => this.treeOnChange(e, 'ParentCategory')} />
                                                 </Col>
                                             </FormGroup>
-
                                             <FormGroup row>
                                                 <Col md="3">
                                                     <Label className="float-right" htmlFor="text-input">Sắp xếp <span style={{ color: 'red' }}>(*)</span></Label>
@@ -181,8 +260,16 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onAddCategory: (category) => {
             dispatch(actAddCategoryRequest(category));
         },
+        getGetCategoryRequest: (ParentCategory) => {
+            dispatch(actgetCategoryTreeRequest(ParentCategory));
+        }
     }
 }
-export default connect(null, mapDispatchToProps)(CategoryCreate);
+const mapStateToProps = state => {
+    return {
+        categoriesTree: state.categories.categoriesTree,
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryCreate);
 // Thêm đoạn { withRef: true } để thằng có refs có thể gọi được
 // export default connect(null, mapDispatchToProps, null, { withRef: true })(CategoryCreate);
