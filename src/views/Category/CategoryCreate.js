@@ -10,25 +10,29 @@ import Textarea from 'react-validation/build/textarea';
 import Select from 'react-validation/build/select';
 import CheckButton from 'react-validation/build/button';
 import { connect } from 'react-redux';
-import { actAddCategoryRequest, actUpdateCategoryRequest, actgetCategoryTreeRequest } from './../../action/Category';
+import { actAddCategoryRequest, actUpdateCategoryRequest, actgetCategoryTreeRequest, ditmeban } from './../../action/Category';
 import * as categoryservice from './CategoryService';
 import * as notification from '../../ultils/notification';
 import TreeView from 'deni-react-treeview';
 class CategoryCreate extends Component {
+    onLazyLoad(item) {
+        debugger;
+        if (!item.children[0].hasOwnProperty('id')) {
+            item.children = [];
+            item.children.push({
+                id: 103,
+                text: 'Banana 3',
+                isLeaf: true
+            });
+        }
+    }
     fruitsAndVegetables = [
         {
             id: 100,
             text: 'Fruits',
+            isLeaf: false,
             children: [
                 {
-                    id: 101,
-                    text: 'Orange',
-                    isLeaf: true
-                },
-                {
-                    id: 102,
-                    text: 'Banana',
-                    isLeaf: true
                 }
             ]
         },
@@ -185,7 +189,11 @@ class CategoryCreate extends Component {
                                                         items={this.fruitsAndVegetables}
                                                         showIcon={false}
                                                         ref="treeview"
-                                                        onSelectItem={(e) => this.treeOnChange(e, 'ParentCategory')} />
+                                                        //     onSelectItem={(e) => this.treeOnChange(e, 'ParentCategory')}
+                                                        //    lazyLoad={ true }
+                                                        onExpanded={this.onLazyLoad.bind(this)}
+                                                    //    onLazyLoad={ this.onLazyLoad.bind(this) }
+                                                    />
                                                 </Col>
                                             </FormGroup>
                                             <FormGroup row>

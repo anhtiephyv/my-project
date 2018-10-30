@@ -40,6 +40,10 @@ export const actgetCategoryTreeRequest = (ParentCategory) => {
         );
     }
 }
+export const ditmeban = (ParentCategory) => {
+    return Promise.resolve(callApi.get('category/GetTreeData', ParentCategory));
+    
+}
 /// GetPaging
 export const actgetCategoryTree = (data) => {
     return {
